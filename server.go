@@ -1,10 +1,13 @@
 package main
 
 import (
-	"github.com/Moonlight-Zhao/go-project-example/cotroller"
-	"github.com/Moonlight-Zhao/go-project-example/repository"
-	"gopkg.in/gin-gonic/gin.v1"
+	//"github.com/Moonlight-Zhao/go-project-example/cotroller"
+	"github.com/Armove/go-project-example/cotroller"
+	//"github.com/Moonlight-Zhao/go-project-example/repository"
 	"os"
+
+	"github.com/Armove/go-project-example/repository"
+	"gopkg.in/gin-gonic/gin.v1"
 )
 
 func main() {
@@ -15,6 +18,13 @@ func main() {
 	r.GET("/community/page/get/:id", func(c *gin.Context) {
 		topicId := c.Param("id")
 		data := cotroller.QueryPageInfo(topicId)
+		c.JSON(200, data)
+	})
+
+	r.POST("/community/post/do", func(c *gin.Context) {
+		topicId, _ := c.GetPostForm("topic_id")
+		content, _ := c.GetPostForm("content")
+		data := cotroller.PublishPost(topicId, content)
 		c.JSON(200, data)
 	})
 	err := r.Run()
